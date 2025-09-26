@@ -13,7 +13,7 @@ type newsapi_resp struct {
 	TotalResults int `json:"totalResults"`
 }
 
-func Is_official(key, q string) bool {
+func Is_official(key, q string) bool { // check request in some official domains
 	q = strings.ReplaceAll(q, " ", "-")
 	const url = "https://newsapi.org/v2/everything/?"
 	params := fmt.Sprintf("?q=%s&domains=bbc.com&language=en&apiKey=%s", q, key)

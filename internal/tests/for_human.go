@@ -12,7 +12,7 @@ type sapling_resp struct {
 	Score float64 `json:"score"`
 }
 
-func Is_human(key, text string) bool {
+func Is_human(key, text string) bool { // check text for human wiht 'sapling ai'
 	const url = "https://api.sapling.ai/api/v1/aidetect"
 
 	req_body, _ := json.Marshal(map[string]interface{}{

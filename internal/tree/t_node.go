@@ -13,10 +13,11 @@ type t_node struct {
 }
 
 func parse_tnodes(tn1, tn2 *t_node) {
-	simil := alg.Shingle_alg(tn1.post, tn2.post)
+	simil := alg.Shingle_alg(tn1.post, tn2.post, 3)
 
-	if simil < 0.50 {	return }
-	tn1.items = append(tn1.items, tn2)
-	tn2.org = tn1.org * simil
-	tn2.is_used = true
+	if simil >= 0.0 {
+		tn1.items = append(tn1.items, tn2)
+		tn2.org = tn1.org * simil
+		tn2.is_used = true
+	}
 }

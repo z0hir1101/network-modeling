@@ -10,13 +10,16 @@ import (
 
 func main() {
 	var url string
+	env.Get_flags()
 	fmt.Scan(&url)
-	log.Printf("||\tPARSE WEBSITE\n")
-	title := web.Parse_website(url, "t")
-	log.Printf("||\tFIND SIMILAR POSTS\n")
-	posts := web.Search_google(env.Google_api(), env.Google_ex(), title)
-	log.Printf("||\tBUILDING GRAPH FROM POSTS\n")
-	graph := tree.Build(posts)
 
-	fmt.Println(graph)
+	log.Printf("||\t* parse website\n")
+	_, title := web.Parse_url(url, "h1")
+
+	log.Printf("||\t* find similar sites\n")
+	posts := web.Google_search(env.Google_api(), env.Google_ex(), title, 5)
+
+	log.Printf("||\t* building network graph\n")
+	graph := tree.Build(posts)
+	tree.Graph_view(graph, 1)
 }

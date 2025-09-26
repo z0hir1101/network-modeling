@@ -8,14 +8,16 @@ import (
 	"github.com/PuerkitoBio/goquery"
 )
 
-func Parse_website(url string, selector string) string {
+func Parse_url(url string, selector string) (int, string) {
 	resp, err := http.Get(url)
 	if err != nil {
-		log.Fatalf("url_parse.go[Parse_url]: %v\n", err)
+		log.Printf("url_parse.go[Parse_url]: %v\n", err)
+		return 1, ""
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
-		log.Fatalf("url_parse.go[Parse_url]: %v\n", err)
+		log.Printf("url_parse.go[Parse_url]: %d\n", resp.StatusCode)
+		return 1, ""
 	}
 
 	var text strings.Builder
@@ -27,5 +29,5 @@ func Parse_website(url string, selector string) string {
 		}
 	})
 
-	return text.String()
+	return 0, text.String()
 }
