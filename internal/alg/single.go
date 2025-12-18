@@ -11,7 +11,7 @@ import (
 
 const h_func_count = 200 // count of different hash functions
 
-func Shingle_alg(t1, t2 string, shingle_size int) float32 {
+func Shingle_alg(t1, t2 string, shingle_size int) float64 {
 	t1, t2 = format_text(t1), format_text(t2) // format texts
 	sh1, sh2 := get_shingles(t1, shingle_size), get_shingles(t1, shingle_size) // cut texts into the small parts(shingles)
 	h_list1, h_list2 := hash_shingles(sh1), hash_shingles(sh2) // generate hash lists for each text
@@ -20,7 +20,7 @@ func Shingle_alg(t1, t2 string, shingle_size int) float32 {
 	for i, c := range h_list1 {
 		if c == h_list2[i] { sim_count++ }
 	}
-	return float32(sim_count)/h_func_count
+	return float64(sim_count) / h_func_count
 }
 
 func get_shingles(text string, size int) []string {

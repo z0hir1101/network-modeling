@@ -3,6 +3,7 @@ package tests
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"io"
 	"log"
 	"net/http"
@@ -30,11 +31,12 @@ func Is_human(key, text string) bool { // check text for human wiht 'sapling ai'
 	defer resp.Body.Close()
 
 	body, _ := io.ReadAll(resp.Body)
-	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
+	if resp.StatusCode != http.StatusOK {
 		log.Fatalf("check.go[Is_human]: %d\n", resp.StatusCode)
 	}
 
 	var result sapling_resp
 	json.Unmarshal(body, &result)
+	fmt.Println(result.Score)
 	return result.Score < 0.4
 }

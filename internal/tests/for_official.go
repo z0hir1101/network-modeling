@@ -6,29 +6,36 @@ import (
 	"io"
 	"log"
 	"net/http"
-	"strings"
+	"net/url"
 )
 
-type newsapi_resp struct {
+type NewsAPIResponse struct {
 	TotalResults int `json:"totalResults"`
 }
 
-func Is_official(key, q string) bool { // check request in some official domains
-	q = strings.ReplaceAll(q, " ", "-")
-	const url = "https://newsapi.org/v2/everything/?"
-	params := fmt.Sprintf("?q=%s&domains=bbc.com&language=en&apiKey=%s", q, key)
-	resp, err := http.Get(url + params)
+func Is_official(key, query string) bool { // check in official websites
+	baseURL := "https://newsapi.org/v2/everything/?"
+	u, _ := url.Parse(baseURL)
+	q := u.Query()
+	q.Set("q", query)
+	q.Set("apiKey", key)
+	q.Set("language", "en")
+
+	u.RawQuery = q.Encode()
+
+	fmt.Println(u.String())
+	resp, err := http.Get(u.String())
 	if err != nil {
-		log.Fatalf("check.go[Is_official]: %v\n", err)
+		log.Fatalf("na_search.go[Newsapi_search]: %v\n", err)
 	}
 	defer resp.Body.Close()
 
 	body, _ := io.ReadAll(resp.Body)
-	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
-		log.Fatalf("check.go[Is_official]: %d\n", resp.StatusCode)
+	if resp.StatusCode != http.StatusOK {
+		log.Fatalf("na_search.go[Newsapi_search]: %d\n", resp.StatusCode)
 	}
 
-	var result newsapi_resp
+	var result NewsAPIResponse
 	json.Unmarshal(body, &result)
 	return result.TotalResults > 0
 }

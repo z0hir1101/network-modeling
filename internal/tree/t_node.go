@@ -1,23 +1,24 @@
 package tree
 
 import (
+	"fmt"
 	"network_modeling/internal/alg"
 )
 
-type t_node struct {
-	url     string
-	post    string
-	items   []*t_node
-	is_used bool
-	org     float32
+type T_node struct {
+	URL     string
+	Post    string
+	Items   []*T_node
+	Is_used bool
+	ORG     float64
 }
 
-func parse_tnodes(tn1, tn2 *t_node) {
-	simil := alg.Shingle_alg(tn1.post, tn2.post, 3)
-
-	if simil >= 0.0 {
-		tn1.items = append(tn1.items, tn2)
-		tn2.org = tn1.org * simil
-		tn2.is_used = true
+func parse_tnodes(tn1, tn2 *T_node) {
+	simil := alg.Shingle_alg(tn1.Post, tn2.Post, 3)
+	fmt.Println(simil)
+	if simil >= 0.6 {
+		tn1.Items = append(tn1.Items, tn2)
+		tn2.ORG = tn1.ORG * simil
+		tn2.Is_used = true
 	}
 }

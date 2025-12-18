@@ -15,7 +15,7 @@ func Parse_url(url string, selector string) (int, string) {
 		return 1, ""
 	}
 	defer resp.Body.Close()
-	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
+	if resp.StatusCode != http.StatusOK {
 		log.Printf("url_parse.go[Parse_url]: %d\n", resp.StatusCode)
 		return 1, ""
 	}
